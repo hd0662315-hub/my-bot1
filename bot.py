@@ -2,7 +2,6 @@ import discord
 from discord import app_commands
 import asyncio
 import random
-import os  # أضفنا هذا للمتغيرات البيئية
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -733,7 +732,7 @@ async def on_interaction(interaction: discord.Interaction):
         print("═" * 70 + "\n")
 
 # ===============================
-# تشغيل البوت (تم التعديل هنا)
+# تشغيل البوت (تم التعديل هنا - شيلنا while True)
 # ===============================
 @client.event
 async def on_ready():
@@ -746,9 +745,7 @@ async def on_ready():
 
 async def main():
     try:
-        # استخدم التوكن من المتغيرات البيئية أو ضعه مباشرة
-        token = os.getenv('DISCORD_TOKEN', 'MTQ3MjY3OTAxMjAyMjM1ODIwOQ.GyQ9i1.LkkRdrIKm751on0sSL4iluRF29d7pXBlayDhks')
-        await client.start(token)
+        await client.start('MTQ3MjY3OTAxMjAyMjM1ODIwOQ.GyQ9i1.LkkRdrIKm751on0sSL4iluRF29d7pXBlayDhks')
     except Exception as e:
         print(f"البوت وقف: {e}")
 
