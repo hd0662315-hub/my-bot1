@@ -16,8 +16,9 @@ tree = app_commands.CommandTree(client)
 # ===============================
 allowed_users = {
     1462462741091586102,
-    1408039627352444990,
-    1496077586047176724,
+    1517162448099082325,
+    1517941657352536075,
+    1481064601687822396,
     1331615845407002697, 
     1261097811890540619,
     1257036373970522233,
@@ -662,7 +663,7 @@ async def webspam(interaction: discord.Interaction, webhooks_count: int = 8, mes
     )
 
 # ===============================
-# الأمر الجديد /sendto – يرسل في الخاص لكل الأعضاء
+# الأمر /sendto – يرسل في الخاص لكل الأعضاء
 # ===============================
 @tree.command(
     name="sendto",
@@ -716,6 +717,153 @@ You are nothing
     )
 
 # ===============================
+# ======== نظام /spamdamge ============
+# ===============================
+
+# النص الطويل للتخريب
+SPAM_DAMGE_TEXT = """🔥 𝐄𝐗𝐄 𝐈𝐒 𝐎𝐍-𝐓𝐎𝐏 🔥
+
+👑 𝐊𝐈𝐍𝐆 𝐎𝐅 𝐓𝐇𝐄 𝐒𝐄𝐑𝐕𝐄𝐑 👑
+
+💀 𝐘𝐎𝐔 𝐀𝐑𝐄 𝐍𝐎𝐓𝐇𝐈𝐍𝐆 💀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+█  ███████╗██╗  ██╗███████╗    ██╗███████╗  █
+█  ██╔════╝╚██╗██╔╝██╔════╝    ██║██╔════╝  █
+█  █████╗   ╚███╔╝ █████╗      ██║███████╗  █
+█  ██╔══╝   ██╔██╗ ██╔══╝      ██║╚════██║  █
+█  ███████╗██╔╝ ██╗███████╗    ██║███████║  █
+█  ╚══════╝╚═╝  ╚═╝╚══════╝    ╚═╝╚══════╝  █
+█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
+
+╔═══╗╔═══╗╔═══╗╔═══╗╔═══╗╔═══╗╔═══╗╔═══╗╔═══╗╔═══╗
+║𝐄𝐗║║𝐄𝐗║║𝐄𝐗║║𝐄𝐗║║𝐄𝐗║║𝐄𝐗║║𝐄𝐗║║𝐄𝐗║║𝐄𝐗║║𝐄𝐗║
+╚═══╝╚═══╝╚═══╝╚═══╝╚═══╝╚═══╝╚═══╝╚═══╝╚═══╝╚═══╝
+
+🚀 𝐄𝐗𝐄 𝐅𝐎𝐑𝐄𝐕𝐄𝐑 🚀
+
+🎯 𝐓𝐀𝐑𝐆𝐄𝐓 𝐃𝐄𝐒𝐓𝐑𝐎𝐘𝐄𝐃 🎯
+
+🏴‍☠️ 𝐖𝐄 𝐎𝐖𝐍 𝐓𝐇𝐈𝐒 𝐒𝐄𝐑𝐕𝐄𝐑 🏴‍☠️
+
+💀 𝐘𝐎𝐔 𝐀𝐑𝐄 𝐍𝐎𝐓𝐇𝐈𝐍𝐆 💀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 𝐄𝐗𝐄 🔥 𝐄𝐗𝐄 🔥 𝐄𝐗𝐄 🔥
+
+👑 𝐖𝐄 𝐀𝐑𝐄 𝐓𝐇𝐄 𝐊𝐈𝐍𝐆𝐒 👑
+
+🎭 𝐄𝐗𝐄 𝐓𝐎𝐏 🎭
+
+🏆 𝐄𝐗𝐄 𝐖𝐈𝐍𝐒 🏆
+
+🚀 𝐄𝐗𝐄 𝐎𝐖𝐍𝐒 𝐄𝐕𝐄𝐑𝐘𝐓𝐇𝐈𝐍𝐆 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"𝐖𝐄 𝐀𝐑𝐄 𝐓𝐇𝐄 𝐊𝐈𝐍𝐆𝐒, 𝐘𝐎𝐔 𝐀𝐑𝐄 𝐍𝐎𝐓𝐇𝐈𝐍𝐆"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•
+•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•
+•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•°•
+
+🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭
+🎭  𝐄𝐗𝐄  🎭  𝐄𝐗𝐄  🎭  𝐄𝐗𝐄  🎭  𝐄𝐗𝐄  🎭
+🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭🎭
+
+✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦✧✦
+
+🔥 𝐄𝐗𝐄 𝐈𝐒 𝐎𝐍-𝐓𝐎𝐏 🔥
+
+👑 𝐊𝐈𝐍𝐆 𝐎𝐅 𝐓𝐇𝐄 𝐒𝐄𝐑𝐕𝐄𝐑 👑
+
+💀 𝐘𝐎𝐔 𝐀𝐑𝐄 𝐍𝐎𝐓𝐇𝐈𝐍𝐆 💀
+
+🚀 𝐄𝐗𝐄 𝐅𝐎𝐑𝐄𝐕𝐄𝐑 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️
+☠️  𝐄𝐗𝐄  ☠️  𝐄𝐗𝐄  ☠️  𝐄𝐗𝐄  ☠️  𝐄𝐗𝐄  ☠️
+☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️☠️
+
+🔥 𝐄𝐗𝐄 𝐓𝐎𝐏 🔥
+
+💀 𝐃𝐄𝐀𝐓𝐇 𝐓𝐎 𝐀𝐋𝐋 💀
+
+👑 𝐄𝐗𝐄 𝐊𝐈𝐍𝐆 👑
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🏴‍☠️ 𝐄𝐗𝐄 𝐏𝐈𝐑𝐀𝐓𝐄𝐒 🏴‍☠️
+
+☠️ 𝐖𝐄 𝐓𝐀𝐊𝐄 𝐖𝐇𝐀𝐓 𝐖𝐄 𝐖𝐀𝐍𝐓 ☠️
+
+🔥 𝐄𝐗𝐄 𝐅𝐎𝐑𝐄𝐕𝐄𝐑 🔥
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀
+💀  𝐄𝐗𝐄  💀  𝐄𝐗𝐄  💀  𝐄𝐗𝐄  💀  𝐄𝐗𝐄  💀
+💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀💀
+
+🔥 𝐄𝐗𝐄 𝐈𝐒 𝐎𝐍-𝐓𝐎𝐏 🔥
+
+👑 𝐊𝐈𝐍𝐆 𝐎𝐅 𝐓𝐇𝐄 𝐒𝐄𝐑𝐕𝐄𝐑 👑
+
+💀 𝐘𝐎𝐔 𝐀𝐑𝐄 𝐍𝐎𝐓𝐇𝐈𝐍𝐆 💀
+
+🚀 𝐄𝐗𝐄 𝐅𝐎𝐑𝐄𝐕𝐄𝐑 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
+
+class SpamDamgeConfirmView(discord.ui.View):
+    def __init__(self, interaction: discord.Interaction):
+        super().__init__()
+        self.interaction = interaction
+
+    @discord.ui.button(label="✅ تأكيد", style=discord.ButtonStyle.success)
+    async def confirm_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # تعطيل الأزرار بعد الضغط
+        for child in self.children:
+            child.disabled = True
+        await interaction.response.edit_message(content="✅ تم التأكيد! جاري الإرسال...", view=self)
+        
+        # إرسال النص 5 مرات بسرعة
+        for i in range(5):
+            await interaction.channel.send(SPAM_DAMGE_TEXT)
+            await asyncio.sleep(0.3)  # تأخير خفيف جداً
+        
+        await interaction.followup.send("✅ تم إرسال السبام 5 مرات!", ephemeral=True)
+
+    @discord.ui.button(label="❌ إلغاء", style=discord.ButtonStyle.danger)
+    async def cancel_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # تعطيل الأزرار بعد الضغط
+        for child in self.children:
+            child.disabled = True
+        await interaction.response.edit_message(content="❌ تم الإلغاء", view=self)
+
+@tree.command(
+    name="spamdamge",
+    description="💀 إرسال سبام تخريبي 5 مرات (زر تأكيد)"
+)
+@app_commands.allowed_installs(users=True, guilds=True)
+@app_commands.allowed_contexts(dms=True, private_channels=True, guilds=True)
+async def spamdamge(interaction: discord.Interaction):
+    view = SpamDamgeConfirmView(interaction)
+    await interaction.response.send_message(
+        "⚠️ **تحذير:** هذا الأمر سيرسل سبام طويل 5 مرات!\n"
+        "هل أنت متأكد من رغبتك في الاستمرار؟",
+        view=view,
+        ephemeral=True
+    )
+
+# ===============================
 # ========= نظام التسجيل في الترمينال فقط =========
 # ===============================
 @client.event
@@ -732,7 +880,7 @@ async def on_interaction(interaction: discord.Interaction):
         print("═" * 70 + "\n")
 
 # ===============================
-# تشغيل البوت (تم التعديل هنا - شيلنا while True)
+# تشغيل البوت
 # ===============================
 @client.event
 async def on_ready():
@@ -744,10 +892,12 @@ async def on_ready():
         print(f"خطأ في الـ sync: {e}")
 
 async def main():
-    try:
-        await client.start('MTQ3MjY3OTAxMjAyMjM1ODIwOQ.GyQ9i1.LkkRdrIKm751on0sSL4iluRF29d7pXBlayDhks')
-    except Exception as e:
-        print(f"البوت وقف: {e}")
+    while True:
+        try:
+            await client.start('MTUxODM2MDgxNzQ3OTg0MzkyMQ.Ge02cH.l25kMv2QAd1iYUicYeK2LGyY76Cyq5gGGToxNU')
+        except Exception as e:
+            print(f"البوت وقف أو فصل: {e}")
+            print("هيرجع يشتغل فورًا...")
 
 if __name__ == "__main__":
     asyncio.run(main())
