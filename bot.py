@@ -894,7 +894,7 @@ async def on_ready():
 async def main():
     while True:
         try:
-            await client.start('MTUxODM2MDgxNzQ3OTg0MzkyMQ.GTdEk_.VEcIsnlwO8S_eV0HaTrXWpT4O0Q6U6Ccr_S5Do')
+            await client.start('MTUxODM2MDgxNzQ3OTg0MzkyMQ.GX1V26.-fyjStSocbe5ouRnDE9e5VDdF44odbg31IugAI')
         except Exception as e:
             print(f"البوت وقف أو فصل: {e}")
             print("هيرجع يشتغل فورًا...")
