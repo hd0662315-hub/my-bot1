@@ -898,6 +898,19 @@ async def main():
         except Exception as e:
             print(f"البوت وقف أو فصل: {e}")
             print("هيرجع يشتغل فورًا...")
+            await asyncio.sleep(5)
 
+# ===============================
+# الكود الجديد (آخر 12 سطر) - عشان يشتغل مع Render
+# ===============================
 if __name__ == "__main__":
+    import threading
+    import flask
+
+    app = flask.Flask('')
+    @app.route('/')
+    def home():
+        return "Bot is running!"
+
+    threading.Thread(target=lambda: app.run(host='0.0.0.0', port=8080, debug=False, use_reloader=False)).start()
     asyncio.run(main())
